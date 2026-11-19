@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#06101f"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><title>Isolation – Group 3</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#06101f;overflow:hidden;font-family:"Trebuchet MS",system-ui,sans-serif;color:#fff;user-select:none;-webkit-tap-highlight-color:transparent}
+#wrap{position:fixed;inset:0 0 46px 0;perspective:1800px;overflow:hidden}
+#stage{width:1280px;height:720px;position:absolute;left:50%;top:50%;transform-style:preserve-3d;transform:translate(-50%,-50%) scale(.5)}
+#scene{position:absolute;left:0;right:0;top:110px;height:500px;perspective:1200px}
+#cap{position:absolute;left:0;right:0;top:86px;text-align:center;font-size:36px;font-weight:bold;z-index:2;text-shadow:0 3px 8px #000}
+#gnd{position:absolute;left:50%;top:50%;width:1040px;height:540px;margin:-270px 0 0 -520px;transform-style:preserve-3d;transform:rotateX(62deg);border-radius:28px;background:repeating-linear-gradient(90deg,#ffffff0d 0 2px,#0000 2px 80px),repeating-linear-gradient(0deg,#0000001a 0 2px,#0000 2px 80px),radial-gradient(circle,#46b56f,#1d6b3f 85%);box-shadow:0 0 0 10px #0d4a2a,0 70px 90px #000c}
+#org{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+#pyr{position:absolute;left:0;top:0;transform-style:preserve-3d;transform:scale3d(1,1,.001)}
+.rp{position:absolute;top:-270px;height:540px;width:327px}
+.rl{left:-130px;transform-origin:0 50%;transform:rotateY(-66.6deg);background:repeating-linear-gradient(0deg,#0003 0 3px,#0000 3px 24px),linear-gradient(90deg,#4f525a,#8b8f98 55%,#fff 92%)}
+.rr{left:-197px;transform-origin:100% 50%;transform:rotateY(66.6deg);background:repeating-linear-gradient(0deg,#0003 0 3px,#0000 3px 24px),linear-gradient(90deg,#e6ecf5,#666a73 45%,#33363d)}
+.cr{position:absolute;left:-22px;top:-44px;width:44px;height:44px;border-radius:50%;transform-origin:50% 100%;box-shadow:inset -6px -8px 12px #0006}
+.sh{position:absolute;left:-24px;top:-24px;width:48px;height:48px;border-radius:50%;background:radial-gradient(#000a,#0000 70%)}
+.s{position:absolute;inset:0;padding:44px 70px;opacity:0;pointer-events:none;backface-visibility:hidden;border-radius:24px;background:radial-gradient(circle at 15% 0,#1d4a5c,#0b1d36 55%,#06101f);box-shadow:0 0 70px #2de2c433;overflow:hidden}
+.s.on{opacity:1;pointer-events:auto;animation:inn .9s cubic-bezier(.2,.8,.2,1) both}
+.s.off{animation:out .7s ease both}
+@keyframes inn{from{opacity:0;transform:rotateY(80deg) translateZ(-400px)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:rotateY(-80deg) translateZ(-400px)}}
+h1{font-size:128px;margin:0;letter-spacing:4px;color:#7ff5e0;text-shadow:0 1px 0 #2bb5a0,0 2px 0 #1f9a88,0 3px 0 #178375,0 4px 0 #106b60,0 5px 0 #0a544b,0 14px 18px #000a}
+h2{font-size:64px;margin:0 0 22px;color:#7ff5e0;text-shadow:0 2px 0 #1f9a88,0 4px 0 #106b60,0 10px 14px #000a}
+p{font-size:44px;line-height:1.3;margin:0 0 20px}
+b{color:#ffb454}
+.row{display:flex;gap:26px}
+.card{flex:1;padding:24px;border-radius:22px;background:#ffffff14;border:2px solid #7ff5e066;font-size:38px;text-align:center;transform:rotateY(-10deg)}
+.card i{display:block;font-style:normal;font-size:96px}
+.on .card{animation:pop .8s both}.on .card:nth-child(2){animation-delay:.25s}.on .card:nth-child(3){animation-delay:.5s}
+@keyframes pop{from{opacity:0;transform:translateZ(-400px) rotateX(70deg)}}
+.cube{width:260px;height:260px;position:relative;transform-style:preserve-3d;animation:spin 16s linear infinite}
+.cube em{position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-style:normal;background:#7ff5e01f;border:3px solid #7ff5e0;border-radius:18px}
+.cube em:nth-child(1){transform:translateZ(130px)}.cube em:nth-child(2){transform:rotateY(90deg) translateZ(130px)}.cube em:nth-child(3){transform:rotateY(180deg) translateZ(130px)}.cube em:nth-child(4){transform:rotateY(-90deg) translateZ(130px)}.cube em:nth-child(5){transform:rotateX(90deg) translateZ(130px)}.cube em:nth-child(6){transform:rotateX(-90deg) translateZ(130px)}
+@keyframes spin{from{transform:rotateX(-20deg) rotateY(0)}to{transform:rotateX(-20deg) rotateY(360deg)}}
+.fl{width:260px;height:400px;perspective:900px;cursor:pointer}
+.fl>div{position:relative;width:100%;height:100%;transition:transform .8s;transform-style:preserve-3d}
+.fl.f>div{transform:rotateY(180deg)}
+.fl span{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;font-size:34px;line-height:1.25;border:3px solid #7ff5e0}
+.fl .a{background:linear-gradient(160deg,#17506a,#0b2a44);font-size:42px;font-weight:bold}.fl .a i{font-style:normal;font-size:110px}
+.fl .z{background:linear-gradient(160deg,#6b3d0f,#2c1a06);border-color:#ffb454;transform:rotateY(180deg)}
+canvas{border-radius:18px;width:1140px;height:400px;display:block;box-shadow:0 14px 40px #000a}
+.btn{font:bold 36px "Trebuchet MS",system-ui;color:#06101f;background:#ffb454;border:0;border-radius:40px;padding:10px 34px;box-shadow:0 6px 0 #b36d12;margin-top:14px}
+.st{font-size:40px;padding:14px 26px;margin:0 0 12px;border-radius:16px;background:#ffffff14;border-left:10px solid #ffb454;transform-origin:left}
+.on .st{animation:sl .8s both}.on .st:nth-child(2){animation-delay:.5s}.on .st:nth-child(3){animation-delay:1s}.on .st:nth-child(4){animation-delay:1.5s}.on .st:nth-child(5){animation-delay:2s}.on .st:nth-child(6){animation-delay:2.5s}
+@keyframes sl{from{opacity:0;transform:rotateY(-80deg) translateX(-300px)}}
+.mem{flex:1;text-align:center;font-size:36px;animation:fy 3s ease-in-out infinite alternate}
+.mem:nth-child(even){animation-delay:-1.5s}
+.mem u{display:grid;place-items:center;width:120px;height:120px;margin:0 auto 14px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ffd58f,#c8741a);text-decoration:none;font-size:64px;font-weight:bold;color:#06101f;box-shadow:0 14px 20px #000a}
+@keyframes fy{from{transform:translateY(-12px) rotateY(-14deg)}to{transform:translateY(12px) rotateY(14deg)}}
+.ty{font-size:150px;text-align:center;margin:60px 0 10px;font-weight:900;background:linear-gradient(90deg,#7ff5e0,#ffb454,#ff7ab6);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 8px 0 #0a544b);animation:zm 3s ease-in-out infinite alternate}
+@keyframes zm{from{transform:rotateY(-18deg) rotateX(6deg)}to{transform:rotateY(18deg) rotateX(-6deg)}}
+.cf{position:absolute;top:-70px;animation:fall 4s linear infinite;pointer-events:none}
+@keyframes fall{to{transform:translateY(840px) rotate(540deg)}}
+nav{position:fixed;bottom:0;left:0;right:0;height:46px;display:flex;gap:10px;justify-content:center;align-items:center;z-index:5}
+nav button{width:44px;height:36px;border-radius:12px;border:0;background:#7ff5e0;color:#06101f;font-size:20px;font-weight:bold;box-shadow:0 3px 0 #178375}
+#dots{display:flex;gap:8px}#dots i{width:12px;height:12px;border-radius:50%;background:#ffffff44}#dots i.on{background:#ffb454;transform:scale(1.4)}
+#rot{display:none;position:fixed;inset:0;background:#06101f;z-index:9;place-items:center;text-align:center;font-size:30px;padding:30px}
+@media(orientation:portrait){#rot{display:grid}}
+@media(prefers-reduced-motion:reduce){.cube,.mem,.ty{animation:none}}
+</style></head><body>
+<div id="rot"><div><div style="font-size:90px">📱↻</div>Ikiling ang phone mo (landscape) para makita ang presentation.</div></div>
+<div id="wrap"><div id="stage">
+
+<section class="s"><div class="row" style="align-items:center;height:100%">
+<div style="flex:1"><h1>ISOLATION</h1><p style="font-size:52px;margin-top:20px">How separation creates new species</p><p style="font-size:44px;color:#ffb454">Group 3 Report</p><p style="font-size:30px;opacity:.7">Swipe or tap ▶ to begin</p></div>
+<div class="cube"><em>🏔️</em><em>🌊</em><em>🏜️</em><em>🌋</em><em>🏝️</em><em>🦎</em></div></div></section>
+
+<section class="s"><h2>What is isolation?</h2>
+<p>Isolation happens when a population is <b>separated</b> into groups that can <b>no longer breed</b> with each other.</p>
+<div class="row" style="margin-top:30px"><div class="card"><i>🚧</i>Separation</div><div class="card"><i>🔀</i>No gene flow</div><div class="card"><i>🧬</i>Groups change apart</div></div></section>
+
+<section class="s"><h2>Natural barriers that separate populations</h2>
+<div class="row" style="justify-content:space-between">
+<div class="fl"><div><span class="a"><i>🏔️</i>Mountains</span><span class="z">A mountain range keeps groups on opposite sides from meeting.</span></div></div>
+<div class="fl"><div><span class="a"><i>🌊</i>Rivers</span><span class="z">A new river can split one forest population into two.</span></div></div>
+<div class="fl"><div><span class="a"><i>🏝️</i>Oceans</span><span class="z">Islands trap animals far from the mainland, like Galápagos finches.</span></div></div>
+<div class="fl"><div><span class="a"><i>🏜️</i>Deserts</span><span class="z">Dry land blocks forest species from crossing over.</span></div></div></div>
+<p style="font-size:30px;text-align:center;margin-top:12px;opacity:.8">Tap a card to flip it!</p></section>
+
+<section class="s" style="padding-top:24px"><h2 style="margin:0;font-size:52px">Demo: isolation in action</h2><div id="cap">Press ▶ Play to start the demo</div>
+<div id="scene"><div id="gnd"><div id="org"><div id="pyr"><div class="rp rl"></div><div class="rp rr"></div></div></div></div></div>
+<div style="position:absolute;left:0;right:0;bottom:22px;text-align:center"><button class="btn" id="play" style="margin:0">▶ Play demo</button></div></section>
+
+<section class="s"><h2 style="font-size:56px">How isolation forms new species</h2>
+<div class="st">🏔️ A barrier splits the population</div>
+<div class="st">🌍 Each group lives in a different environment</div>
+<div class="st">🧬 Mutations and natural selection differ</div>
+<div class="st">🚫 The groups can no longer interbreed</div>
+<div class="st">✨ A new species is formed!</div></section>
+
+<section class="s"><h2>Group 3 reporters</h2>
+<div class="row" style="margin-top:50px">
+<div class="mem"><u>G</u>Genesis</div><div class="mem"><u>S</u>Sunshine</div><div class="mem"><u>R</u>Rex</div><div class="mem"><u>R</u>Reynard</div><div class="mem"><u>V</u>Vincent</div></div></section>
+
+<section class="s" id="end"><div class="ty">Thank you!</div><p style="text-align:center;font-size:50px">Group 3 • Isolation</p><p style="text-align:center;font-size:40px;color:#ffb454">Any questions?</p></section>
+
+</div></div>
+<nav><button id="pv">◀</button><span id="dots"></span><button id="nx">▶</button><button id="mu">🔊</button><button id="fs">⛶</button></nav>
+<script>
+const $=s=>document.querySelector(s),S=[...document.querySelectorAll('.s')],st=$('#stage');
+let cur=0,ac,mute=false;
+let K=1,rx=0,ry=0;
+function ap(){st.style.transform='translate(-50%,-50%) scale('+K+') rotateX('+rx+'deg) rotateY('+ry+'deg)'}
+function fit(){const v=window.visualViewport||window,w=v.width||innerWidth,h=v.height||innerHeight;K=Math.min(w/1280,(h-46)/720)*.99;ap()}
+['resize','orientationchange','fullscreenchange'].forEach(ev=>addEventListener(ev,()=>{fit();setTimeout(fit,150);setTimeout(fit,600)}));
+addEventListener('pointermove',e=>{ry=(e.clientX/innerWidth-.5)*8;rx=-(e.clientY/innerHeight-.5)*6;ap()});fit();
+function tone(f,d=.15,ty='sine',v=.15,w=0,to=0){if(mute)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume();const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+w;o.type=ty;o.frequency.setValueAtTime(f,t);if(to)o.frequency.exponentialRampToValueAtTime(to,t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d)}catch(e){}}
+const whoosh=()=>tone(180,.5,'sawtooth',.06,0,1000),pop=()=>tone(500,.12,'triangle',.2,0,900),ding=()=>{tone(880,.4);tone(1320,.5,'sine',.12,.1)},fanfare=()=>[523,659,784,1046,1318].forEach((f,i)=>tone(f,.35,'triangle',.2,i*.14));
+const dots=$('#dots');S.forEach(()=>dots.appendChild(document.createElement('i')));
+function go(n){if(n<0||n>=S.length||n==cur)return;const o=S[cur];o.classList.remove('on');o.classList.add('off');setTimeout(()=>o.classList.remove('off'),700);cur=n;S[n].classList.add('on');mark();whoosh();if(n==3){run=false;reset()}if(n==6){confetti();fanfare()}}
+function mark(){[...dots.children].forEach((d,i)=>d.className=i==cur?'on':'')}
+S[0].classList.add('on');mark();
+$('#nx').onclick=()=>go(cur+1);$('#pv').onclick=()=>go(cur-1);
+$('#mu').onclick=e=>{mute=!mute;e.target.textContent=mute?'🔇':'🔊'};
+$('#fs').onclick=async()=>{try{await document.documentElement.requestFullscreen();await screen.orientation.lock('landscape')}catch(e){}};
+addEventListener('keydown',e=>{if(e.key=='ArrowRight'||e.key==' ')go(cur+1);if(e.key=='ArrowLeft')go(cur-1)});
+let sx=0;addEventListener('touchstart',e=>sx=e.touches[0].clientX);addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>60)go(cur+(d<0?1:-1))});
+document.querySelectorAll('.fl').forEach(e=>e.onclick=()=>{e.classList.toggle('f');pop()});
+function confetti(){const s=$('#end');s.querySelectorAll('.cf').forEach(e=>e.remove());for(let i=0;i<50;i++){const e=document.createElement('span');e.className='cf';e.textContent=['🎉','✨','🧬','🦎','🌟'][i%5];e.style.cssText='left:'+Math.random()*100+'%;animation-delay:'+Math.random()*3+'s;font-size:'+(28+Math.random()*30)+'px';s.appendChild(e)}}
+/* demo */
+const org=$('#org'),pyr=$('#pyr'),cap=$('#cap'),cl=v=>Math.min(1,Math.max(0,v));let cr=[],t0=0,run=false,fl=[],lc='';
+for(let i=0;i<34;i++){const d=document.createElement('div'),h=document.createElement('div');d.className='cr';h.className='sh';org.append(h,d);cr.push({d,h,hu:-1})}
+function reset(){cr.forEach(c=>Object.assign(c,{x:(Math.random()-.5)*900,y:(Math.random()-.5)*440,vx:(Math.random()-.5)*3.2,vy:(Math.random()-.5)*2.4,s:0,ph:Math.random()*6,hu:-1}));fl=[0,0,0]}
+reset();
+$('#play').onclick=()=>{reset();t0=performance.now();run=true;pop()};
+const eye=x=>'radial-gradient(circle at '+x+'% 42%,#000 0 6%,#fff 7% 15%,#0000 16%)';
+function frame(now){
+ const t=run?(now-t0)/1000:0,e=cl((t-3)/3),gr=e*e*(3-2*e),p=cl((t-6)/6),bw=130*gr;
+ if(t>3&&!fl[0]){fl[0]=1;cr.forEach(c=>c.s=c.x<0?0:1);tone(70,1.6,'sawtooth',.2,0,35)}
+ if(t>6&&!fl[1]){fl[1]=1;ding()}
+ if(t>12.5&&!fl[2]){fl[2]=1;fanfare()}
+ pyr.style.transform='scale3d(1,1,'+Math.max(gr,.001)+')';
+ for(const c of cr){
+  const k=1+(c.s?p*.5:-p*.15),r=22*k,hue=Math.round(c.s?120-p*95:120+p*90);
+  if(run){c.x+=c.vx;c.y+=c.vy}
+  let lo=-480+r,hi=480-r;if(t>3){if(c.s)lo=bw+r;else hi=-bw-r}
+  if(c.x<lo){c.x=lo;c.vx=Math.abs(c.vx)}if(c.x>hi){c.x=hi;c.vx=-Math.abs(c.vx)}
+  if(c.y<-240){c.y=-240;c.vy=Math.abs(c.vy)}if(c.y>240){c.y=240;c.vy=-Math.abs(c.vy)}
+  const z=Math.abs(Math.sin(now/220+c.ph))*14;
+  c.d.style.transform='translate3d('+c.x+'px,'+c.y+'px,'+z+'px) rotateX(-62deg) scale('+k+')';
+  c.h.style.transform='translate3d('+c.x+'px,'+c.y+'px,0) scale('+k*(1-z/70)+')';
+  if(c.hu!=hue){c.hu=hue;c.d.style.background=eye(34)+','+eye(66)+',radial-gradient(circle at 35% 28%,hsl('+hue+',90%,78%),hsl('+hue+',80%,52%) 45%,hsl('+hue+',75%,26%))'}}
+ const m=!run?'Press ▶ Play to start the demo':t<3?'1) One population lives together and breeds freely':t<6?'2) A mountain rises… 🏔️':t<12.5?'3) Separated! Each side adapts… Generation '+Math.round(p*10000):'4) Too different to mate → NEW SPECIES! ✨';
+ if(m!=lc){lc=m;cap.textContent=m}
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+if('serviceWorker' in navigator&&location.protocol.indexOf('http')==0)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
